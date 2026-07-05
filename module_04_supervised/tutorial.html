@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 04 — Supervised Learning</title>
+<style>
+  :root{--bg:#0f1720;--panel:#16212e;--ink:#e6edf3;--muted:#9fb0c0;--accent:#4aa8ff;
+        --good:#3ddc84;--warn:#ffcc66;--line:#26333f;--code:#0b1118;}
+  @media (prefers-color-scheme:light){:root{--bg:#f6f8fa;--panel:#fff;--ink:#1c2530;
+        --muted:#5a6a78;--accent:#0969da;--good:#1a7f37;--warn:#9a6700;--line:#d0d7de;--code:#f0f3f6;}}
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 -apple-system,Segoe UI,Roboto,Arial,sans-serif;}
+  .wrap{max-width:860px;margin:0 auto;padding:40px 22px 90px;}
+  header{border-bottom:2px solid var(--line);padding-bottom:20px;margin-bottom:28px;}
+  .kicker{color:var(--accent);font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-size:12px;}
+  h1{margin:8px 0 6px;font-size:29px;} h2{margin:40px 0 12px;font-size:22px;border-left:4px solid var(--accent);padding-left:12px;}
+  h3{margin:22px 0 8px;font-size:16px;color:var(--muted);}
+  code{background:var(--code);padding:2px 6px;border-radius:5px;font-family:Consolas,monospace;font-size:14px;}
+  pre{background:var(--code);padding:15px 18px;border-radius:10px;overflow-x:auto;border:1px solid var(--line);}
+  pre code{background:none;padding:0;font-size:13.5px;line-height:1.5;}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin:18px 0;}
+  .tryit{border-left:4px solid var(--good);} .tryit h3{color:var(--good);margin-top:0;}
+  .note{border-left:4px solid var(--warn);} .note h3{color:var(--warn);margin-top:0;}
+  .sec{border-left:4px solid #ff6b6b;} .sec h3{color:#ff8a8a;margin-top:0;}
+  table{border-collapse:collapse;width:100%;margin:16px 0;} th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;font-size:14.5px;}
+  th{background:var(--panel);color:var(--accent);}
+  .pill{display:inline-block;background:var(--code);border:1px solid var(--line);border-radius:999px;padding:2px 10px;font-size:12.5px;color:var(--muted);margin:2px;}
+  .nav{display:flex;justify-content:space-between;margin-top:26px;font-size:14px;}
+  footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:14px;} a{color:var(--accent);}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="kicker">bob_AI · Module 04</div>
+  <h1>Machine Learning Core: Supervised Learning</h1>
+  <p style="color:var(--muted);margin:0">Learn a function from labeled examples. Regression predicts a
+  number; classification predicts a category. Same five-step workflow for both.</p>
+  <div style="margin-top:12px"><span class="pill">⏱ ~90 min</span><span class="pill">📈 scikit-learn</span>
+  <span class="pill">⚔ overfitting = the enemy</span></div>
+</header>
+
+<h2>1 · The five-step workflow</h2>
+<pre><code>SPLIT  →  TRAIN  →  PREDICT  →  EVALUATE  →  INTERPRET</code></pre>
+<p>Every supervised project — flowers, fraud, malware — is this loop. Read <code>headfirst.md</code>
+for the intuition; here you run it three times.</p>
+
+<h2>2 · Regression: predict a number, beat the baseline</h2>
+<pre><code>py module_04_supervised\linear_regression.py</code></pre>
+<div class="card tryit"><h3>✅ What to watch for</h3>
+<ul style="margin:0">
+  <li>The model's error (MAE) is far below the <b>baseline</b> "guess the average" — proof it learned.</li>
+  <li>The learned weights ≈ the true hidden rule (<code>size≈50, bed≈30, age≈−20</code>). It recovered
+      the pattern from data alone.</li>
+  <li><b>R²</b> near 1.0 = explains almost all the variation.</li>
+</ul></div>
+<p><b>Habit for life:</b> a model that can't beat the baseline learned nothing, however fancy it looks.</p>
+
+<h2>3 · Classification: the full workflow</h2>
+<pre><code>py module_04_supervised\classify_iris.py</code></pre>
+<div class="card tryit"><h3>✅ Read the confusion matrix</h3>
+<p style="margin:0">Rows = true class, columns = predicted. The diagonal is correct; everything off it is a
+mistake. This tells you <em>where</em> the model errs, not just how often — the difference between
+"90% accurate" and "90% accurate but blind to the one class you care about."</p></div>
+
+<h2>4 · Overfitting, made visible</h2>
+<pre><code>py module_04_supervised\train_test_split_demo.py</code></pre>
+<div class="card note"><h3>The table tells the whole story</h3>
+<table>
+  <tr><th>Complexity</th><th>Train error</th><th>Test error</th><th>Diagnosis</th></tr>
+  <tr><td>too low</td><td>high</td><td>high</td><td>underfit (too simple)</td></tr>
+  <tr><td>just right</td><td>low</td><td>low</td><td>good — learned the pattern</td></tr>
+  <tr><td>too high</td><td>~0</td><td>explodes</td><td>OVERFIT — memorized the noise</td></tr>
+</table>
+<p style="margin:0"><b>The golden rule:</b> judge a model only on data it has never seen. Train accuracy is
+vanity; test accuracy is truth.</p></div>
+
+<div class="card sec"><h3>🛡 Security lens — memorization is a leak</h3>
+<p style="margin:0">Overfitting isn't only inaccurate; a model that memorizes its training rows can be
+probed to reveal them (membership inference, training-data extraction). In privacy-sensitive ML,
+<em>generalization is a security property</em>. Keep that framing for Modules 10–11.</p></div>
+
+<h2>5 · Your project</h2>
+<p><code>project.md</code>: build a house-price predictor on <em>real</em> data, beat the baseline, then
+<em>deliberately overfit</em> it and watch test performance collapse. You learn the enemy by summoning it.</p>
+
+<div class="nav">
+  <span>◀ <a href="../module_03_data/tutorial.html">Module 03</a></span>
+  <span><a href="decisions.md">decisions.md</a> · <a href="project.md">project.md</a> ▶</span>
+</div>
+<footer>bob_AI — Module 04 of 12 · Next: <strong>Module 05 — Unsupervised Learning</strong></footer>
+</div>
+</body>
+</html>
