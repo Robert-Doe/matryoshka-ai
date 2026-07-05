@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 05 — Unsupervised Learning</title>
+<style>
+  :root{--bg:#0f1720;--panel:#16212e;--ink:#e6edf3;--muted:#9fb0c0;--accent:#4aa8ff;
+        --good:#3ddc84;--warn:#ffcc66;--line:#26333f;--code:#0b1118;}
+  @media (prefers-color-scheme:light){:root{--bg:#f6f8fa;--panel:#fff;--ink:#1c2530;
+        --muted:#5a6a78;--accent:#0969da;--good:#1a7f37;--warn:#9a6700;--line:#d0d7de;--code:#f0f3f6;}}
+  *{box-sizing:border-box;} body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 -apple-system,Segoe UI,Roboto,Arial,sans-serif;}
+  .wrap{max-width:860px;margin:0 auto;padding:40px 22px 90px;}
+  header{border-bottom:2px solid var(--line);padding-bottom:20px;margin-bottom:28px;}
+  .kicker{color:var(--accent);font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-size:12px;}
+  h1{margin:8px 0 6px;font-size:29px;} h2{margin:40px 0 12px;font-size:22px;border-left:4px solid var(--accent);padding-left:12px;}
+  h3{margin:22px 0 8px;font-size:16px;color:var(--muted);}
+  code{background:var(--code);padding:2px 6px;border-radius:5px;font-family:Consolas,monospace;font-size:14px;}
+  pre{background:var(--code);padding:15px 18px;border-radius:10px;overflow-x:auto;border:1px solid var(--line);}
+  pre code{background:none;padding:0;font-size:13.5px;line-height:1.5;}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin:18px 0;}
+  .tryit{border-left:4px solid var(--good);} .tryit h3{color:var(--good);margin-top:0;}
+  .sec{border-left:4px solid #ff6b6b;} .sec h3{color:#ff8a8a;margin-top:0;}
+  table{border-collapse:collapse;width:100%;margin:16px 0;} th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;font-size:14.5px;}
+  th{background:var(--panel);color:var(--accent);}
+  .pill{display:inline-block;background:var(--code);border:1px solid var(--line);border-radius:999px;padding:2px 10px;font-size:12.5px;color:var(--muted);margin:2px;}
+  .nav{display:flex;justify-content:space-between;margin-top:26px;font-size:14px;}
+  footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:14px;} a{color:var(--accent);}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="kicker">bob_AI · Module 05</div>
+  <h1>Unsupervised Learning (Finding Structure Without Labels)</h1>
+  <p style="color:var(--muted);margin:0">No answer key. The model finds groups and axes; you assign the
+  meaning. This is how defenders catch the attacks nobody labeled yet.</p>
+  <div style="margin-top:12px"><span class="pill">⏱ ~75 min</span><span class="pill">🔵 K-Means + PCA</span>
+  <span class="pill">🛡 UEBA / anomaly detection</span></div>
+</header>
+
+<h2>1 · Two tools</h2>
+<table>
+  <tr><th>Tool</th><th>Question it answers</th><th>Output</th></tr>
+  <tr><td>Clustering (K-Means)</td><td>What natural groups exist?</td><td>a group label per point</td></tr>
+  <tr><td>Dim. reduction (PCA)</td><td>Which few axes carry the signal?</td><td>fewer features, plottable</td></tr>
+</table>
+
+<h2>2 · Clustering: watch K-Means converge</h2>
+<pre><code>py module_05_unsupervised\kmeans_demo.py</code></pre>
+<div class="card tryit"><h3>✅ What to watch</h3>
+<ul style="margin:0">
+  <li><b>Inertia</b> (cluster tightness) drops with each iteration then flattens — that flattening is convergence.</li>
+  <li>The <b>elbow method</b> finds k=3 (the true number) where adding clusters stops helping.</li>
+  <li>Cluster labels are arbitrary — 0 isn't "better" than 1. Structure, not meaning.</li>
+</ul></div>
+
+<h2>3 · Dimensionality reduction: 30-D → 2-D</h2>
+<pre><code>py module_05_unsupervised\pca_demo.py   # writes plots/pca_2d.png</code></pre>
+<p>PCA squashes 30 tumor features into 2 numbers that still separate the classes. The
+<b>explained variance</b> tells you how much information you kept (here ~63% in 2 components; 95% needs 10).
+Open the PNG — the classes visibly split.</p>
+
+<h2>4 · Segmentation + the security payoff</h2>
+<pre><code>py module_05_unsupervised\customer_segments.py</code></pre>
+<div class="card sec"><h3>🛡 The tiny cluster is the alert</h3>
+<p style="margin:0">The script plants a small group of users with huge off-hours downloads. K-Means isolates them
+into their own tiny cluster. In <b>UEBA</b> (User & Entity Behavior Analytics), a small cluster far from
+everything else is a textbook unsupervised anomaly — found with <em>no labeled attack data</em>.
+This is why clustering matters for defenders: it surfaces the unknown-unknowns.</p></div>
+
+<h2>5 · The mindset</h2>
+<p>Unsupervised learning is a <b>hypothesis generator</b>. It proposes structure; your domain expertise
+turns it into a decision. Always keep a human in the loop to name and validate what the machine found.</p>
+
+<h2>6 · Your project</h2>
+<p><code>project.md</code>: cluster a dataset yourself, defend your choice of k with the elbow method, and
+justify the human meaning you attach to each cluster.</p>
+
+<div class="nav">
+  <span>◀ <a href="../module_04_supervised/tutorial.html">Module 04</a></span>
+  <span><a href="decisions.md">decisions.md</a> · <a href="project.md">project.md</a> ▶</span>
+</div>
+<footer>bob_AI — Module 05 of 12 · Next: <strong>Module 06 — Model Evaluation</strong></footer>
+</div>
+</body>
+</html>
