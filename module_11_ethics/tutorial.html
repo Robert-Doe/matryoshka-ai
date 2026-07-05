@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 11 — AI Ethics, Bias &amp; Safety</title>
+<style>
+  :root{--bg:#0f1720;--panel:#16212e;--ink:#e6edf3;--muted:#9fb0c0;--accent:#4aa8ff;
+        --good:#3ddc84;--warn:#ffcc66;--line:#26333f;--code:#0b1118;}
+  @media (prefers-color-scheme:light){:root{--bg:#f6f8fa;--panel:#fff;--ink:#1c2530;
+        --muted:#5a6a78;--accent:#0969da;--good:#1a7f37;--warn:#9a6700;--line:#d0d7de;--code:#f0f3f6;}}
+  *{box-sizing:border-box;} body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 -apple-system,Segoe UI,Roboto,Arial,sans-serif;}
+  .wrap{max-width:860px;margin:0 auto;padding:40px 22px 90px;}
+  header{border-bottom:2px solid var(--line);padding-bottom:20px;margin-bottom:28px;}
+  .kicker{color:var(--accent);font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-size:12px;}
+  h1{margin:8px 0 6px;font-size:29px;} h2{margin:40px 0 12px;font-size:22px;border-left:4px solid var(--accent);padding-left:12px;}
+  h3{margin:22px 0 8px;font-size:16px;color:var(--muted);}
+  code{background:var(--code);padding:2px 6px;border-radius:5px;font-family:Consolas,monospace;font-size:14px;}
+  pre{background:var(--code);padding:15px 18px;border-radius:10px;overflow-x:auto;border:1px solid var(--line);}
+  pre code{background:none;padding:0;font-size:13.5px;line-height:1.5;}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin:18px 0;}
+  .tryit{border-left:4px solid var(--good);} .tryit h3{color:var(--good);margin-top:0;}
+  .note{border-left:4px solid var(--warn);} .note h3{color:var(--warn);margin-top:0;}
+  .sec{border-left:4px solid #ff6b6b;} .sec h3{color:#ff8a8a;margin-top:0;}
+  table{border-collapse:collapse;width:100%;margin:16px 0;} th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;font-size:14.5px;}
+  th{background:var(--panel);color:var(--accent);}
+  .pill{display:inline-block;background:var(--code);border:1px solid var(--line);border-radius:999px;padding:2px 10px;font-size:12.5px;color:var(--muted);margin:2px;}
+  .nav{display:flex;justify-content:space-between;margin-top:26px;font-size:14px;}
+  footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:14px;} a{color:var(--accent);}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="kicker">bob_AI · Module 11</div>
+  <h1>AI Ethics, Bias &amp; Safety (Don't Skip This)</h1>
+  <p style="color:var(--muted);margin:0">Capability without responsibility is a liability. Audit for bias,
+  understand why "fair" is contested, and threat-model your models — your security lens, applied to AI.</p>
+  <div style="margin-top:12px"><span class="pill">⏱ ~90 min</span><span class="pill">⚖ fairness metrics</span>
+  <span class="pill">🛡 red-teaming</span></div>
+</header>
+
+<h2>1 · A 93%-accurate model that discriminates</h2>
+<pre><code>py module_11_ethics\bias_audit.py</code></pre>
+<div class="card sec"><h3>🛡 The harm hides in the aggregate</h3>
+<table>
+  <tr><th>Group</th><th>Accuracy</th><th>Approval rate</th><th>False-reject rate</th></tr>
+  <tr><td>A</td><td>~93%</td><td>~50%</td><td>~9%</td></tr>
+  <tr><td>B</td><td>~93%</td><td>~29%</td><td>~15%</td></tr>
+</table>
+<p style="margin:0">Same overall accuracy, very different treatment — the model faithfully learned bias baked into
+historical labels. Dropping the sensitive feature doesn't fix it (other features are <b>proxies</b>). Try it.</p></div>
+
+<h2>2 · "Fair" is many incompatible things</h2>
+<pre><code>py module_11_ethics\fairness_metrics.py</code></pre>
+<div class="card note"><h3>You must choose a definition</h3>
+<ul style="margin:0">
+  <li><b>Demographic parity</b> — equal approval rate.</li>
+  <li><b>Equal opportunity</b> — equal true-positive rate (equal treatment of the qualified).</li>
+  <li><b>Predictive parity</b> — a "yes" means the same for each group.</li>
+</ul>
+<p style="margin:8px 0 0">When base rates differ you generally <b>cannot satisfy all three</b> (a theorem, not a bug). So
+"is it fair?" has no purely technical answer — you pick the definition that fits the decision and defend it.</p></div>
+
+<h2>3 · The safety map &amp; the red-team tool</h2>
+<p>Read <code>alignment_notes.md</code> — the conceptual map (specification gaming, RLHF, interpretability,
+evals) — and <code>red_team_checklist.md</code>, a practical checklist you run on any model. Both connect
+each safety axis back to a mechanism you already built (memorization, adversarial examples, poisoning,
+prompt injection).</p>
+
+<div class="card sec"><h3>🛡 This is your bridge, not a detour</h3>
+<p style="margin:0">A fairness/safety audit <em>is</em> threat modeling: assume adversaries, enumerate attack surfaces,
+don't trust input, defend in depth. Adversarial ML, prompt injection, red-teaming, and evals are your
+security instincts applied to models. You're porting a discipline you already own.</p></div>
+
+<h2>4 · Your project</h2>
+<p><code>project.md</code>: audit one of YOUR earlier models (Module 04, 06, or 09) for bias, document the harm,
+choose and justify a fairness criterion, and propose a mitigation — the exact structure of a responsible-AI
+section in a paper.</p>
+
+<div class="nav">
+  <span>◀ <a href="../module_10_genai/tutorial.html">Module 10</a></span>
+  <span><a href="decisions.md">decisions.md</a> · <a href="project.md">project.md</a> ▶</span>
+</div>
+<footer>bob_AI — Module 11 of 12 · Next: <strong>Module 12 — Capstone Project</strong></footer>
+</div>
+</body>
+</html>
