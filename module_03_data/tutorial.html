@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 03 — Data Fundamentals</title>
+<style>
+  :root{--bg:#0f1720;--panel:#16212e;--ink:#e6edf3;--muted:#9fb0c0;--accent:#4aa8ff;
+        --good:#3ddc84;--warn:#ffcc66;--line:#26333f;--code:#0b1118;}
+  @media (prefers-color-scheme:light){:root{--bg:#f6f8fa;--panel:#fff;--ink:#1c2530;
+        --muted:#5a6a78;--accent:#0969da;--good:#1a7f37;--warn:#9a6700;--line:#d0d7de;--code:#f0f3f6;}}
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 -apple-system,Segoe UI,Roboto,Arial,sans-serif;}
+  .wrap{max-width:860px;margin:0 auto;padding:40px 22px 90px;}
+  header{border-bottom:2px solid var(--line);padding-bottom:20px;margin-bottom:28px;}
+  .kicker{color:var(--accent);font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-size:12px;}
+  h1{margin:8px 0 6px;font-size:29px;} h2{margin:40px 0 12px;font-size:22px;border-left:4px solid var(--accent);padding-left:12px;}
+  h3{margin:22px 0 8px;font-size:16px;color:var(--muted);}
+  code{background:var(--code);padding:2px 6px;border-radius:5px;font-family:Consolas,monospace;font-size:14px;}
+  pre{background:var(--code);padding:15px 18px;border-radius:10px;overflow-x:auto;border:1px solid var(--line);}
+  pre code{background:none;padding:0;font-size:13.5px;line-height:1.5;}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin:18px 0;}
+  .tryit{border-left:4px solid var(--good);} .tryit h3{color:var(--good);margin-top:0;}
+  .note{border-left:4px solid var(--warn);} .note h3{color:var(--warn);margin-top:0;}
+  .sec{border-left:4px solid #ff6b6b;} .sec h3{color:#ff8a8a;margin-top:0;}
+  table{border-collapse:collapse;width:100%;margin:16px 0;} th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;font-size:14.5px;}
+  th{background:var(--panel);color:var(--accent);}
+  .pill{display:inline-block;background:var(--code);border:1px solid var(--line);border-radius:999px;padding:2px 10px;font-size:12.5px;color:var(--muted);margin:2px;}
+  .nav{display:flex;justify-content:space-between;margin-top:26px;font-size:14px;}
+  footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:14px;} a{color:var(--accent);}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="kicker">bob_AI · Module 03</div>
+  <h1>Data Fundamentals (AI is 80% Data Work)</h1>
+  <p style="color:var(--muted);margin:0">Collect → clean → explore → visualize. Do this well and a
+  simple model wins; do it badly and no model can save you.</p>
+  <div style="margin-top:12px"><span class="pill">⏱ ~75 min</span><span class="pill">🐼 pandas + matplotlib</span>
+  <span class="pill">🛡 login-events dataset</span></div>
+</header>
+
+<h2>1 · The pipeline you'll run</h2>
+<p>Three scripts, one flow, on a deliberately dirty dataset of login events labeled
+<code>normal</code>/<code>suspicious</code>:</p>
+<pre><code>py module_03_data\load_explore.py   # SEE the mess (EDA)
+py module_03_data\clean_data.py     # FIX it, step by step, auditable
+py module_03_data\visualize.py      # TELL the story with 3 plots</code></pre>
+
+<h2>2 · Explore: let the data confess its problems</h2>
+<pre><code>py module_03_data\load_explore.py</code></pre>
+<div class="card tryit"><h3>✅ The five problems it finds</h3>
+<table>
+  <tr><th>Problem</th><th>Symptom in the output</th></tr>
+  <tr><td>Wrong type</td><td><code>bytes_sent</code> loads as text (an <code>N/A</code> is hiding in it)</td></tr>
+  <tr><td>Missing</td><td>blank cells in bytes_sent, duration_sec, label</td></tr>
+  <tr><td>Duplicates</td><td>repeated event rows</td></tr>
+  <tr><td>Categories</td><td><code>US</code> vs <code>us</code>, <code>normal</code> vs <code>NORMAL</code></td></tr>
+  <tr><td>Outliers</td><td>negative bytes/duration; 1,000,000-byte events; 999s</td></tr>
+</table></div>
+
+<h2>3 · Clean: fix each problem, auditable</h2>
+<pre><code>py module_03_data\clean_data.py   # writes clean_data.csv</code></pre>
+<p>Each step prints what it changed. That audit trail is not optional in research — silent data edits
+destroy reproducibility. Key judgment calls:</p>
+<ul>
+  <li><b>Missing label → drop the row.</b> You can't learn from an example with no answer.</li>
+  <li><b>Missing numbers → fill with the median</b> (robust to outliers, unlike the mean).</li>
+  <li><b>Negative values → delete</b> (impossible = data error).</li>
+  <li><b>Giant <code>bytes_sent</code> → KEEP.</b> That outlier is the attack you want to detect.
+      Domain knowledge, not a blanket rule, decides.</li>
+</ul>
+
+<div class="card sec"><h3>🛡 Security lens — data poisoning</h3>
+<p style="margin:0">An attacker who can inject rows into your training data can plant a backdoor without ever
+touching the model. The exact checks you run here — type validation, dedup, outlier and range
+sanity — are your first defense against poisoned training sets. Cleaning IS a security control.</p></div>
+
+<h2>4 · Visualize: three questions, three plots</h2>
+<pre><code>py module_03_data\visualize.py   # writes PNGs into plots/</code></pre>
+<div class="card note"><h3>What each plot decides</h3>
+<ul style="margin:0">
+  <li><b>Histogram of bytes_sent</b> → <i>are there distinct populations?</i> (Yes — normal cluster + exfil tail.)</li>
+  <li><b>Failed attempts by label</b> → <i>is this feature useful?</i> (Yes — suspicious fail far more.)</li>
+  <li><b>duration vs bytes scatter</b> → <i>are classes separable?</i> (Yes — a feasibility check BEFORE you model.)</li>
+</ul></div>
+
+<h2>5 · The two ideas that will save you most often</h2>
+<p><b>Garbage in, garbage out.</b> A model learns whatever is in the data, including the mistakes.<br>
+<b>Data leakage.</b> If future info or the answer sneaks into features (a duplicate in both train and
+test; a feature derived from the label), your notebook score is a lie. You'll fight leakage directly in Module 04.</p>
+
+<h2>6 · Your project</h2>
+<p><code>project.md</code> hands you a <em>new</em> messy dataset (<code>messy_data_project.csv</code>) and asks
+you to clean it yourself and justify every choice. That justification is the skill.</p>
+
+<div class="nav">
+  <span>◀ <a href="../module_02_math/tutorial.html">Module 02</a></span>
+  <span><a href="decisions.md">decisions.md</a> · <a href="project.md">project.md</a> ▶</span>
+</div>
+<footer>bob_AI — Module 03 of 12 · Next: <strong>Module 04 — Supervised Learning</strong></footer>
+</div>
+</body>
+</html>
