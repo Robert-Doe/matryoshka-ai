@@ -1,0 +1,27 @@
+# bob_AI — AI Foundations Mastery Course
+# Minimal, intentional dependencies. Everything runs locally on your machine.
+#
+# Install:  pip install -r requirements.txt
+# (Windows:  py -m pip install -r requirements.txt)
+#
+# We install a little more than Module 01 strictly needs so the later
+# modules "just work" when you get there. Each line notes where it's first used.
+
+# --- Core numerical + data stack (Modules 02-06) ---
+numpy==2.1.3            # vectors, matrices, the language of ML
+pandas==2.2.3          # tables / dataframes — data wrangling (Module 03)
+matplotlib==3.9.2      # plotting & visualization (Module 03+)
+
+# --- Classic machine learning (Modules 04-06) ---
+scikit-learn==1.5.2    # regression, classification, clustering, metrics
+
+# --- Notebooks (used throughout) ---
+jupyter==1.1.1         # interactive tutorials in module_02+ (.ipynb files)
+
+# --- Deep learning (Module 07+) — safe to install now ---
+# torch is large (~2GB). If install is slow, comment it out until Module 07.
+# torch==2.5.1
+
+# --- LLMs & Generative AI in practice (Module 10) ---
+requests==2.32.3       # calling model APIs
+anthropic==0.39.0      # Claude API client (default provider for this course)
