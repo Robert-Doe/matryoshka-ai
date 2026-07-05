@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 08 — NLP &amp; How LLMs Work</title>
+<style>
+  :root{--bg:#0f1720;--panel:#16212e;--ink:#e6edf3;--muted:#9fb0c0;--accent:#4aa8ff;
+        --good:#3ddc84;--warn:#ffcc66;--line:#26333f;--code:#0b1118;}
+  @media (prefers-color-scheme:light){:root{--bg:#f6f8fa;--panel:#fff;--ink:#1c2530;
+        --muted:#5a6a78;--accent:#0969da;--good:#1a7f37;--warn:#9a6700;--line:#d0d7de;--code:#f0f3f6;}}
+  *{box-sizing:border-box;} body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 -apple-system,Segoe UI,Roboto,Arial,sans-serif;}
+  .wrap{max-width:860px;margin:0 auto;padding:40px 22px 90px;}
+  header{border-bottom:2px solid var(--line);padding-bottom:20px;margin-bottom:28px;}
+  .kicker{color:var(--accent);font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-size:12px;}
+  h1{margin:8px 0 6px;font-size:29px;} h2{margin:40px 0 12px;font-size:22px;border-left:4px solid var(--accent);padding-left:12px;}
+  h3{margin:22px 0 8px;font-size:16px;color:var(--muted);}
+  code{background:var(--code);padding:2px 6px;border-radius:5px;font-family:Consolas,monospace;font-size:14px;}
+  pre{background:var(--code);padding:15px 18px;border-radius:10px;overflow-x:auto;border:1px solid var(--line);}
+  pre code{background:none;padding:0;font-size:13.5px;line-height:1.5;}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin:18px 0;}
+  .tryit{border-left:4px solid var(--good);} .tryit h3{color:var(--good);margin-top:0;}
+  .sec{border-left:4px solid #ff6b6b;} .sec h3{color:#ff8a8a;margin-top:0;}
+  .pill{display:inline-block;background:var(--code);border:1px solid var(--line);border-radius:999px;padding:2px 10px;font-size:12.5px;color:var(--muted);margin:2px;}
+  .nav{display:flex;justify-content:space-between;margin-top:26px;font-size:14px;}
+  footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:14px;} a{color:var(--accent);}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="kicker">bob_AI · Module 08</div>
+  <h1>Natural Language Processing &amp; How LLMs Actually Work</h1>
+  <p style="color:var(--muted);margin:0">text → tokens → embeddings → next-token prediction. Build every
+  box an LLM is made of, then understand attention — the piece that ties it together.</p>
+  <div style="margin-top:12px"><span class="pill">⏱ ~2 hrs</span><span class="pill">🔤 tokens · embeddings · attention</span>
+  <span class="pill">🛡 prompt-injection roots</span></div>
+</header>
+
+<h2>1 · Tokenization — text becomes numbers</h2>
+<pre><code>py module_08_nlp\tokenize_demo.py</code></pre>
+<div class="card tryit"><h3>✅ Watch BPE discover "phish"</h3>
+<p style="margin:0">Subword tokenization (what GPT/Claude use) merges frequent character pairs. It finds
+<code>phish</code> as a reusable unit so <em>phishing/phisher/phished</em> share it. Every prompt becomes
+integer token IDs — and token count is what you're billed for and what fills the context window.</p></div>
+
+<h2>2 · Embeddings — meaning as geometry</h2>
+<pre><code>py module_08_nlp\embeddings_demo.py</code></pre>
+<div class="card tryit"><h3>✅ Meaning emerges from context</h3>
+<p style="margin:0">Built from scratch (co-occurrence + SVD), the vectors put <code>attacker</code> near
+<code>hacker</code> and <code>cat</code> near <code>dog</code> — with no meanings ever provided. Cosine similarity
+(Module 02) finds neighbors. This is the input layer of every LLM.</p></div>
+
+<h2>3 · A language model that generates</h2>
+<pre><code>py module_08_nlp\tiny_bigram_lm.py</code></pre>
+<p>A bigram model learns <code>P(next word | current word)</code> by counting, then generates text by
+sampling one token at a time — <b>autoregressive generation</b>, exactly how an LLM writes. Its flaw:
+it only sees the <em>last</em> word. Fixing that is why transformers exist.</p>
+
+<h2>4 · Attention — the transformer's heart</h2>
+<pre><code>jupyter notebook module_08_nlp\attention_intuition.ipynb</code></pre>
+<p>Computed by hand on a 4-word sentence: each word issues a <b>Query</b>, every word offers a <b>Key</b>,
+their dot-product (Module 02!) becomes an attention <b>weight</b> via softmax, and the output blends every
+word's <b>Value</b>. This lets any word pull meaning from any other — solving the bigram's blindness.</p>
+
+<div class="card sec"><h3>🛡 Security lens — prompt injection</h3>
+<p style="margin:0">Attention operates over the <em>entire</em> context, including text a user or document injects.
+The model attends to malicious hidden instructions the same way it attends to trusted ones — the
+mechanistic root of prompt injection. You'll defend against it in Module 10.</p></div>
+
+<h2>5 · The full picture</h2>
+<pre><code>prompt → tokenize → embed → [transformer layers: attention + feed-forward]
+       → predict next token → sample → append → repeat</code></pre>
+<p>You've now built or hand-computed every box. That's the whole demystification.</p>
+
+<h2>6 · Your project</h2>
+<p><code>project.md</code>: train a next-word model on a text you choose, then explain precisely where it
+falls short of a real LLM — tokenization, context length, or attention.</p>
+
+<div class="nav">
+  <span>◀ <a href="../module_07_neural_nets/tutorial.html">Module 07</a></span>
+  <span><a href="decisions.md">decisions.md</a> · <a href="project.md">project.md</a> ▶</span>
+</div>
+<footer>bob_AI — Module 08 of 12 · Next: <strong>Module 09 — Computer Vision</strong></footer>
+</div>
+</body>
+</html>
