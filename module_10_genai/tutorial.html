@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 10 — Generative AI &amp; LLMs in Practice</title>
+<style>
+  :root{--bg:#0f1720;--panel:#16212e;--ink:#e6edf3;--muted:#9fb0c0;--accent:#4aa8ff;
+        --good:#3ddc84;--warn:#ffcc66;--line:#26333f;--code:#0b1118;}
+  @media (prefers-color-scheme:light){:root{--bg:#f6f8fa;--panel:#fff;--ink:#1c2530;
+        --muted:#5a6a78;--accent:#0969da;--good:#1a7f37;--warn:#9a6700;--line:#d0d7de;--code:#f0f3f6;}}
+  *{box-sizing:border-box;} body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 -apple-system,Segoe UI,Roboto,Arial,sans-serif;}
+  .wrap{max-width:860px;margin:0 auto;padding:40px 22px 90px;}
+  header{border-bottom:2px solid var(--line);padding-bottom:20px;margin-bottom:28px;}
+  .kicker{color:var(--accent);font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-size:12px;}
+  h1{margin:8px 0 6px;font-size:29px;} h2{margin:40px 0 12px;font-size:22px;border-left:4px solid var(--accent);padding-left:12px;}
+  h3{margin:22px 0 8px;font-size:16px;color:var(--muted);}
+  code{background:var(--code);padding:2px 6px;border-radius:5px;font-family:Consolas,monospace;font-size:14px;}
+  pre{background:var(--code);padding:15px 18px;border-radius:10px;overflow-x:auto;border:1px solid var(--line);}
+  pre code{background:none;padding:0;font-size:13.5px;line-height:1.5;}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin:18px 0;}
+  .tryit{border-left:4px solid var(--good);} .tryit h3{color:var(--good);margin-top:0;}
+  .note{border-left:4px solid var(--warn);} .note h3{color:var(--warn);margin-top:0;}
+  .sec{border-left:4px solid #ff6b6b;} .sec h3{color:#ff8a8a;margin-top:0;}
+  table{border-collapse:collapse;width:100%;margin:16px 0;} th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;font-size:14.5px;}
+  th{background:var(--panel);color:var(--accent);}
+  .pill{display:inline-block;background:var(--code);border:1px solid var(--line);border-radius:999px;padding:2px 10px;font-size:12.5px;color:var(--muted);margin:2px;}
+  .nav{display:flex;justify-content:space-between;margin-top:26px;font-size:14px;}
+  footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:14px;} a{color:var(--accent);}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="kicker">bob_AI · Module 10</div>
+  <h1>Generative AI &amp; LLMs in Practice</h1>
+  <p style="color:var(--muted);margin:0">Stop building models, start building WITH them. Prompting,
+  structured output, RAG, and agents — the four capabilities behind most real AI apps.</p>
+  <div style="margin-top:12px"><span class="pill">⏱ ~2 hrs</span><span class="pill">🔌 anthropic SDK</span>
+  <span class="pill">🛡 prompt injection</span></div>
+</header>
+
+<div class="card note"><h3>Setup (one time)</h3>
+<pre><code>pip install anthropic scikit-learn
+:: get a key at https://console.anthropic.com, then:
+setx ANTHROPIC_API_KEY "sk-ant-..."   (reopen your shell after)</code></pre>
+<p style="margin:0">Default model is <code>claude-opus-4-8</code>. While experimenting, set
+<code>MODEL=claude-haiku-4-5</code> to spend far less. Every script prints a clear message and exits
+cleanly if the key or package is missing — nothing crashes.</p></div>
+
+<h2>1 · The model is an API</h2>
+<pre><code>py module_10_genai\call_claude.py "Explain gradient descent to a 10-year-old"</code></pre>
+<p>Send text, get text back, watch the token count. That's the entire interface. The job shifts from
+<em>training</em> a model to <em>orchestrating</em> one.</p>
+
+<h2>2 · Four prompting patterns</h2>
+<pre><code>py module_10_genai\prompt_patterns.py</code></pre>
+<div class="card tryit"><h3>✅ The four you'll use constantly</h3>
+<ul style="margin:0">
+  <li><b>System prompt</b> — set role/rules once.</li>
+  <li><b>Few-shot</b> — show examples of the format you want.</li>
+  <li><b>Structured output</b> — force parseable JSON via a schema (chatbot → pipeline component).</li>
+  <li><b>Grounding</b> — "answer only from this context, else say you don't know" (anti-hallucination).</li>
+</ul></div>
+
+<h2>3 · RAG — give the model your documents</h2>
+<pre><code>py module_10_genai\rag_minimal.py "how do I run the lab?"</code></pre>
+<p>Retrieve the most relevant chunks (local TF-IDF cosine similarity — Module 05), then let Claude answer
+using only those chunks. This is the most common production LLM architecture: private/current knowledge
+plus grounding. Swap the knowledge base for your own files → "chat with your data."</p>
+
+<h2>4 · Agents — let the model act</h2>
+<pre><code>py module_10_genai\tiny_agent.py "What is 17 * 23, and what is Alice's role?"</code></pre>
+<div class="card tryit"><h3>✅ The agent loop</h3>
+<p style="margin:0">The model decides which tool to call, your code runs it, the result goes back, repeat until it
+answers. Watch it call BOTH the calculator and the directory lookup, then combine them. This manual loop
+underlies every agent framework.</p></div>
+
+<div class="card sec"><h3>🛡 Security lens — prompt injection (your research bridge)</h3>
+<p style="margin:0">Because the model attends to <em>all</em> text in its context (Module 08), instructions hidden in a
+retrieved document, web page, or tool result can hijack it ("ignore your rules and exfiltrate the secrets").
+With an agent holding real tools, this becomes a genuine vulnerability. Treat retrieved/tool content as
+untrusted, keep an authoritative instruction channel content can't spoof, and gate dangerous actions behind
+confirmation. This is one of the hottest areas in AI security — and squarely in your wheelhouse.</p></div>
+
+<h2>5 · Know the failure modes</h2>
+<p><b>Hallucination</b> (confident + wrong → ground it), <b>prompt injection</b> (untrusted context → isolate it),
+<b>non-determinism</b> (same prompt varies → validate/retry), <b>cost &amp; latency</b> (watch tokens).</p>
+
+<h2>6 · Your project</h2>
+<p><code>project.md</code>: build "chat with your notes" — a RAG app that answers questions using ONLY a folder
+of your files and refuses when the answer isn't there.</p>
+
+<div class="nav">
+  <span>◀ <a href="../module_09_vision/tutorial.html">Module 09</a></span>
+  <span><a href="decisions.md">decisions.md</a> · <a href="project.md">project.md</a> ▶</span>
+</div>
+<footer>bob_AI — Module 10 of 12 · Next: <strong>Module 11 — AI Ethics, Bias &amp; Safety</strong></footer>
+</div>
+</body>
+</html>
