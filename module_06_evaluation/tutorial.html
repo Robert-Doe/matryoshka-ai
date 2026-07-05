@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 06 — Model Evaluation</title>
+<style>
+  :root{--bg:#0f1720;--panel:#16212e;--ink:#e6edf3;--muted:#9fb0c0;--accent:#4aa8ff;
+        --good:#3ddc84;--warn:#ffcc66;--line:#26333f;--code:#0b1118;}
+  @media (prefers-color-scheme:light){:root{--bg:#f6f8fa;--panel:#fff;--ink:#1c2530;
+        --muted:#5a6a78;--accent:#0969da;--good:#1a7f37;--warn:#9a6700;--line:#d0d7de;--code:#f0f3f6;}}
+  *{box-sizing:border-box;} body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 -apple-system,Segoe UI,Roboto,Arial,sans-serif;}
+  .wrap{max-width:860px;margin:0 auto;padding:40px 22px 90px;}
+  header{border-bottom:2px solid var(--line);padding-bottom:20px;margin-bottom:28px;}
+  .kicker{color:var(--accent);font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-size:12px;}
+  h1{margin:8px 0 6px;font-size:29px;} h2{margin:40px 0 12px;font-size:22px;border-left:4px solid var(--accent);padding-left:12px;}
+  h3{margin:22px 0 8px;font-size:16px;color:var(--muted);}
+  code{background:var(--code);padding:2px 6px;border-radius:5px;font-family:Consolas,monospace;font-size:14px;}
+  pre{background:var(--code);padding:15px 18px;border-radius:10px;overflow-x:auto;border:1px solid var(--line);}
+  pre code{background:none;padding:0;font-size:13.5px;line-height:1.5;}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin:18px 0;}
+  .tryit{border-left:4px solid var(--good);} .tryit h3{color:var(--good);margin-top:0;}
+  .note{border-left:4px solid var(--warn);} .note h3{color:var(--warn);margin-top:0;}
+  .sec{border-left:4px solid #ff6b6b;} .sec h3{color:#ff8a8a;margin-top:0;}
+  table{border-collapse:collapse;width:100%;margin:16px 0;} th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;font-size:14.5px;}
+  th{background:var(--panel);color:var(--accent);}
+  .pill{display:inline-block;background:var(--code);border:1px solid var(--line);border-radius:999px;padding:2px 10px;font-size:12.5px;color:var(--muted);margin:2px;}
+  .nav{display:flex;justify-content:space-between;margin-top:26px;font-size:14px;}
+  footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:14px;} a{color:var(--accent);}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="kicker">bob_AI · Module 06</div>
+  <h1>Model Evaluation &amp; Improvement (How to Not Fool Yourself)</h1>
+  <p style="color:var(--muted);margin:0">Accuracy lies on imbalanced data. Learn the metrics that don't,
+  cross-validate, and understand the bias–variance trade-off.</p>
+  <div style="margin-top:12px"><span class="pill">⏱ ~90 min</span><span class="pill">📊 precision / recall / F1 / AUC</span>
+  <span class="pill">🛡 imbalanced = security</span></div>
+</header>
+
+<h2>1 · Why accuracy lies</h2>
+<pre><code>py module_06_evaluation\metrics_demo.py</code></pre>
+<div class="card sec"><h3>🛡 The trap, in numbers</h3>
+<table>
+  <tr><th>Model</th><th>Accuracy</th><th>Recall (attacks caught)</th><th>Useful?</th></tr>
+  <tr><td>"always benign"</td><td>98%</td><td>0%</td><td>No — catches nothing</td></tr>
+  <tr><td>real detector</td><td>~96%</td><td>80%</td><td>Yes — but LOWER accuracy</td></tr>
+</table>
+<p style="margin:0">Accuracy ranks the useless model higher. On rare-event (security) data, lead with
+<b>recall</b> and <b>precision</b>, never accuracy alone.</p></div>
+
+<h2>2 · The four numbers everything derives from</h2>
+<pre><code>py module_06_evaluation\confusion_matrix.py   # writes a heatmap</code></pre>
+<pre><code>precision = TP/(TP+FP)   "of alarms, % real"
+recall    = TP/(TP+FN)   "of real attacks, % caught"
+F1        = harmonic mean of the two</code></pre>
+<div class="card note"><h3>Precision vs recall is a CHOICE</h3>
+<p style="margin:0">Favor <b>recall</b> when a miss is catastrophic (malware, threats). Favor <b>precision</b>
+when a false positive is costly (auto-blocking users, deleting mail). State which you optimized and why —
+that's rigorous evaluation.</p></div>
+
+<h2>3 · Don't trust one split — cross-validate</h2>
+<pre><code>py module_06_evaluation\cross_validation.py</code></pre>
+<div class="card tryit"><h3>✅ Report mean ± std</h3>
+<ul style="margin:0">
+  <li>One split swings 2–3% by luck; 5-fold CV tests every row once and gives a stable mean.</li>
+  <li>The <b>std</b> tells you how much to trust the mean.</li>
+  <li>Two must-dos: <b>stratify</b> folds (keep class balance) and keep the <b>scaler inside the pipeline</b>
+      (scaling before CV leaks test info → falsely high scores).</li>
+</ul></div>
+
+<h2>4 · The theory: bias vs variance</h2>
+<pre><code>py module_06_evaluation\bias_variance.py</code></pre>
+<p>Bias = error from being too simple (underfit); variance = error from being too sensitive (overfit).
+The script measures both across 200 resampled datasets: bias falls, variance rises, and the best total
+error sits in the middle. This is why "just use a bigger model" isn't always right.</p>
+
+<h2>5 · Your project</h2>
+<p><code>project.md</code>: evaluate a model on imbalanced data correctly and write the honest
+evaluation paragraph you'd defend to a committee — the exact skill your dissertation needs.</p>
+
+<div class="nav">
+  <span>◀ <a href="../module_05_unsupervised/tutorial.html">Module 05</a></span>
+  <span><a href="decisions.md">decisions.md</a> · <a href="project.md">project.md</a> ▶</span>
+</div>
+<footer>bob_AI — Module 06 of 12 · Next: <strong>Module 07 — Neural Networks &amp; Deep Learning</strong></footer>
+</div>
+</body>
+</html>
