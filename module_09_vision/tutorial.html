@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 09 — Computer Vision</title>
+<style>
+  :root{--bg:#0f1720;--panel:#16212e;--ink:#e6edf3;--muted:#9fb0c0;--accent:#4aa8ff;
+        --good:#3ddc84;--warn:#ffcc66;--line:#26333f;--code:#0b1118;}
+  @media (prefers-color-scheme:light){:root{--bg:#f6f8fa;--panel:#fff;--ink:#1c2530;
+        --muted:#5a6a78;--accent:#0969da;--good:#1a7f37;--warn:#9a6700;--line:#d0d7de;--code:#f0f3f6;}}
+  *{box-sizing:border-box;} body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 -apple-system,Segoe UI,Roboto,Arial,sans-serif;}
+  .wrap{max-width:860px;margin:0 auto;padding:40px 22px 90px;}
+  header{border-bottom:2px solid var(--line);padding-bottom:20px;margin-bottom:28px;}
+  .kicker{color:var(--accent);font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-size:12px;}
+  h1{margin:8px 0 6px;font-size:29px;} h2{margin:40px 0 12px;font-size:22px;border-left:4px solid var(--accent);padding-left:12px;}
+  h3{margin:22px 0 8px;font-size:16px;color:var(--muted);}
+  code{background:var(--code);padding:2px 6px;border-radius:5px;font-family:Consolas,monospace;font-size:14px;}
+  pre{background:var(--code);padding:15px 18px;border-radius:10px;overflow-x:auto;border:1px solid var(--line);}
+  pre code{background:none;padding:0;font-size:13.5px;line-height:1.5;}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin:18px 0;}
+  .tryit{border-left:4px solid var(--good);} .tryit h3{color:var(--good);margin-top:0;}
+  .sec{border-left:4px solid #ff6b6b;} .sec h3{color:#ff8a8a;margin-top:0;}
+  .pill{display:inline-block;background:var(--code);border:1px solid var(--line);border-radius:999px;padding:2px 10px;font-size:12.5px;color:var(--muted);margin:2px;}
+  .nav{display:flex;justify-content:space-between;margin-top:26px;font-size:14px;}
+  footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:14px;} a{color:var(--accent);}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="kicker">bob_AI · Module 09</div>
+  <h1>Computer Vision (Teaching Machines to See)</h1>
+  <p style="color:var(--muted);margin:0">Images are grids of numbers. Convolution slides pattern detectors
+  over them. CNNs learn those detectors from data. Then: adversarial examples.</p>
+  <div style="margin-top:12px"><span class="pill">⏱ ~2 hrs</span><span class="pill">🖼 pixels → convolution → CNN</span>
+  <span class="pill">🛡 adversarial ML</span></div>
+</header>
+
+<h2>1 · An image is an array</h2>
+<pre><code>py module_09_vision\pixels_demo.py</code></pre>
+<div class="card tryit"><h3>✅ See the picture inside the numbers</h3>
+<p style="margin:0">A grayscale image is a 2-D array (0–255); color is 3 stacked grids (R,G,B). Editing =
+array math (brighten, invert, threshold). A phone photo is just HxWx3 numbers. Once you accept this,
+vision stops being magic.</p></div>
+
+<h2>2 · Convolution: the core operation</h2>
+<pre><code>py module_09_vision\convolution_demo.py   # writes plots/convolutions.png</code></pre>
+<p>A <b>kernel</b> is a small grid of weights slid across the image; at each spot it computes a dot
+product (Module 02). Different kernels detect edges, blur, or sharpen. Open the PNG — the Sobel kernels
+light up edges. Each kernel is a <b>feature detector</b>.</p>
+
+<h2>3 · CNNs learn their own kernels</h2>
+<pre><code>pip install torch
+py module_09_vision\cnn_classifier.py</code></pre>
+<div class="card tryit"><h3>✅ The breakthrough</h3>
+<p style="margin:0">A CNN doesn't use hand-designed kernels — it <b>learns</b> them by backprop (Module 07).
+<b>Weight sharing</b> (same kernel everywhere) makes it efficient; <b>hierarchy</b> (edges → shapes →
+objects) makes it powerful. (torch guarded — prints install instructions if absent.)</p></div>
+
+<h2>4 · See what the filters detect</h2>
+<pre><code>jupyter notebook module_09_vision\see_the_filters.ipynb</code></pre>
+<p>Runs without torch. Applies a bank of filters to a digit and shows each one's activation map glowing
+exactly where its pattern (vertical edge, diagonal, blob) appears. That's what a conv layer computes.</p>
+
+<div class="card sec"><h3>🛡 Security lens — adversarial examples (your bridge to AI security)</h3>
+<p style="margin:0">Because a CNN's output is a differentiable function of pixels, you can run gradient descent on
+the <em>input</em> to find a tiny, invisible perturbation that flips the prediction (FGSM/PGD). Stop sign →
+speed-limit sign. This is the whole field of adversarial ML — attacks and defenses — and one of the most
+natural AI↔security research bridges. This module gives you the mechanism.</p></div>
+
+<h2>5 · Your project</h2>
+<p><code>project.md</code>: train a CNN, visualize a learned filter, and (stretch) craft an adversarial
+example that fools your own model — a hands-on entry into adversarial machine learning.</p>
+
+<div class="nav">
+  <span>◀ <a href="../module_08_nlp/tutorial.html">Module 08</a></span>
+  <span><a href="decisions.md">decisions.md</a> · <a href="project.md">project.md</a> ▶</span>
+</div>
+<footer>bob_AI — Module 09 of 12 · Next: <strong>Module 10 — Generative AI &amp; LLMs in Practice</strong></footer>
+</div>
+</body>
+</html>
