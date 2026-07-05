@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 12 — Capstone Project</title>
+<style>
+  :root{--bg:#0f1720;--panel:#16212e;--ink:#e6edf3;--muted:#9fb0c0;--accent:#4aa8ff;
+        --good:#3ddc84;--warn:#ffcc66;--line:#26333f;--code:#0b1118;}
+  @media (prefers-color-scheme:light){:root{--bg:#f6f8fa;--panel:#fff;--ink:#1c2530;
+        --muted:#5a6a78;--accent:#0969da;--good:#1a7f37;--warn:#9a6700;--line:#d0d7de;--code:#f0f3f6;}}
+  *{box-sizing:border-box;} body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 -apple-system,Segoe UI,Roboto,Arial,sans-serif;}
+  .wrap{max-width:860px;margin:0 auto;padding:40px 22px 90px;}
+  header{border-bottom:2px solid var(--line);padding-bottom:20px;margin-bottom:28px;}
+  .kicker{color:var(--accent);font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-size:12px;}
+  h1{margin:8px 0 6px;font-size:29px;} h2{margin:40px 0 12px;font-size:22px;border-left:4px solid var(--accent);padding-left:12px;}
+  h3{margin:22px 0 8px;font-size:16px;color:var(--muted);}
+  code{background:var(--code);padding:2px 6px;border-radius:5px;font-family:Consolas,monospace;font-size:14px;}
+  pre{background:var(--code);padding:15px 18px;border-radius:10px;overflow-x:auto;border:1px solid var(--line);}
+  pre code{background:none;padding:0;font-size:13.5px;line-height:1.5;}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin:18px 0;}
+  .tryit{border-left:4px solid var(--good);} .tryit h3{color:var(--good);margin-top:0;}
+  .note{border-left:4px solid var(--warn);} .note h3{color:var(--warn);margin-top:0;}
+  table{border-collapse:collapse;width:100%;margin:16px 0;} th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;font-size:14.5px;}
+  th{background:var(--panel);color:var(--accent);}
+  .pill{display:inline-block;background:var(--code);border:1px solid var(--line);border-radius:999px;padding:2px 10px;font-size:12.5px;color:var(--muted);margin:2px;}
+  .nav{display:flex;justify-content:space-between;margin-top:26px;font-size:14px;}
+  footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:14px;} a{color:var(--accent);}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="kicker">bob_AI · Module 12 · Capstone</div>
+  <h1>Ship an End-to-End AI Project</h1>
+  <p style="color:var(--muted);margin:0">Everything you learned, converging on one real deliverable.
+  Rigor and clarity beat leaderboard accuracy. This is your portfolio piece.</p>
+  <div style="margin-top:12px"><span class="pill">⏱ ~8-15 hrs</span><span class="pill">🎯 pick one track</span>
+  <span class="pill">📦 code + write-up + ethics</span></div>
+</header>
+
+<h2>1 · The pipeline you'll run</h2>
+<pre><code>FRAME → DATA → MODEL → EVALUATE → ETHICS → WRITE UP</code></pre>
+<p>These are the six stages from the whole course. The <code>project_template/main.py</code> skeleton has
+each one marked as a TODO and runs as-is on a demo dataset, so you always have a working starting point.</p>
+
+<h2>2 · Pick a track</h2>
+<table>
+  <tr><th>Track</th><th>Build</th><th>Best if you liked…</th></tr>
+  <tr><td>A — Classic ML</td><td>a tabular predictor (phishing/fraud/anomaly)</td><td>Modules 3-6, 11</td></tr>
+  <tr><td>B — Vision</td><td>a CNN + adversarial attack &amp; defense</td><td>Module 9</td></tr>
+  <tr><td>C — LLM tool</td><td>a RAG app / agent with an injection defense</td><td>Module 10</td></tr>
+</table>
+<p>All three demand the same <b>rigor</b>: baseline, honest evaluation, ethics component, clear write-up.
+The track only changes the subject. Details in <code>capstone_brief.md</code>.</p>
+
+<h2>3 · Build against the rubric</h2>
+<pre><code># copy the scaffold and start
+cp -r project_template  my_capstone
+cd my_capstone
+python main.py            # runs the skeleton; now replace each TODO</code></pre>
+<div class="card note"><h3>The rubric's hidden message</h3>
+<p style="margin:0">Evaluation (25) + Ethics (15) + Communication (15) = <b>55 of 100 points</b>; raw modeling is only 15.
+Anyone can call <code>.fit()</code>. The scarce skills are measuring honestly, thinking about harm, and
+explaining clearly. Optimize for those. Read <code>evaluation_rubric.md</code> before you start.</p></div>
+
+<h2>4 · The trap to avoid</h2>
+<p>Don't spend 90% of your time chasing +2% accuracy and 10% on everything else. A simple model with a
+clear baseline, an honest evaluation, a real ethics section, and a followable write-up demonstrates mastery
+of the <em>whole discipline</em> — which is the point.</p>
+
+<h2>5 · Definition of done</h2>
+<div class="card tryit"><h3>✅ A reviewer can…</h3>
+<ul style="margin:0">
+  <li>read <code>writeup.md</code> and understand the problem and why it matters;</li>
+  <li>run your code and reproduce the results;</li>
+  <li>see the right metric, a baseline, and where the model fails;</li>
+  <li>find an ethics/limitations section that takes harm seriously;</li>
+  <li>learn what you'd do next.</li>
+</ul></div>
+
+<h2>6 · Finish strong</h2>
+<p>Fill <code>writeup_template.md</code> as you go, and before you call it done, run your own model through
+<code>../module_11_ethics/red_team_checklist.md</code>. Then look back: you built ML from scratch, trained
+neural nets, wielded LLMs, and learned to audit for harm. Go build something you're proud of.</p>
+
+<div class="nav">
+  <span>◀ <a href="../module_11_ethics/tutorial.html">Module 11</a></span>
+  <span><a href="decisions.md">decisions.md</a> · <a href="capstone_brief.md">capstone_brief.md</a> ▶</span>
+</div>
+<footer>bob_AI — Module 12 of 12 · You've reached the end of the course. 🎓</footer>
+</div>
+</body>
+</html>

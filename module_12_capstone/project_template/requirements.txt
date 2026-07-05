@@ -1,0 +1,11 @@
+# Pin the dependencies YOUR capstone actually uses. Start from this and trim/add.
+numpy
+pandas
+matplotlib
+scikit-learn
+
+# Track B (vision) — uncomment if you train a CNN
+# torch
+
+# Track C (LLM tool) — uncomment if you build a RAG app or agent
+# anthropic
