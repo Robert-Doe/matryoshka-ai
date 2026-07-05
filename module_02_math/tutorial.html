@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 02 — Math &amp; Python Essentials</title>
+<style>
+  :root{--bg:#0f1720;--panel:#16212e;--ink:#e6edf3;--muted:#9fb0c0;--accent:#4aa8ff;
+        --good:#3ddc84;--warn:#ffcc66;--line:#26333f;--code:#0b1118;}
+  @media (prefers-color-scheme:light){:root{--bg:#f6f8fa;--panel:#fff;--ink:#1c2530;
+        --muted:#5a6a78;--accent:#0969da;--good:#1a7f37;--warn:#9a6700;--line:#d0d7de;--code:#f0f3f6;}}
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font:16px/1.65 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;}
+  .wrap{max-width:860px;margin:0 auto;padding:40px 22px 90px;}
+  header{border-bottom:2px solid var(--line);padding-bottom:20px;margin-bottom:28px;}
+  .kicker{color:var(--accent);font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-size:12px;}
+  h1{margin:8px 0 6px;font-size:29px;line-height:1.2;}
+  h2{margin:40px 0 12px;font-size:22px;border-left:4px solid var(--accent);padding-left:12px;}
+  h3{margin:22px 0 8px;font-size:16px;color:var(--muted);}
+  code{background:var(--code);padding:2px 6px;border-radius:5px;font-family:Consolas,monospace;font-size:14px;}
+  pre{background:var(--code);padding:15px 18px;border-radius:10px;overflow-x:auto;border:1px solid var(--line);}
+  pre code{background:none;padding:0;font-size:13.5px;line-height:1.5;}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin:18px 0;}
+  .tryit{border-left:4px solid var(--good);} .tryit h3{color:var(--good);margin-top:0;}
+  .note{border-left:4px solid var(--warn);} .note h3{color:var(--warn);margin-top:0;}
+  .sec{border-left:4px solid #ff6b6b;} .sec h3{color:#ff8a8a;margin-top:0;}
+  table{border-collapse:collapse;width:100%;margin:16px 0;}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;font-size:14.5px;}
+  th{background:var(--panel);color:var(--accent);}
+  .pill{display:inline-block;background:var(--code);border:1px solid var(--line);border-radius:999px;
+        padding:2px 10px;font-size:12.5px;color:var(--muted);margin:2px;}
+  .nav{display:flex;justify-content:space-between;margin-top:26px;font-size:14px;}
+  footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:14px;}
+  a{color:var(--accent);}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="kicker">bob_AI · Module 02</div>
+  <h1>Math &amp; Python Essentials (Just Enough, Not a Degree)</h1>
+  <p style="color:var(--muted);margin:0">Four primitives — vectors, dot products, matrices, gradients —
+     plus probability. Everything else in the course is built from these.</p>
+  <div style="margin-top:12px">
+    <span class="pill">⏱ ~90 min</span><span class="pill">🧮 High-school math is enough</span>
+    <span class="pill">🛡 Security examples throughout</span>
+  </div>
+</header>
+
+<h2>1 · The four things to internalize</h2>
+<table>
+  <tr><th>Primitive</th><th>One-line meaning</th><th>Where it shows up</th></tr>
+  <tr><td>Vector</td><td>A thing turned into a list of numbers</td><td>Every input to every model</td></tr>
+  <tr><td>Dot product</td><td>How similar two vectors are</td><td>Search, recsys, anomaly detection, attention</td></tr>
+  <tr><td>Matrix</td><td>Transform many vectors at once</td><td>Every neural-network layer</td></tr>
+  <tr><td>Gradient</td><td>Which way is "downhill" on the error</td><td>How every model learns</td></tr>
+</table>
+<p>Read <code>headfirst.md</code> first for the intuition. This page walks you through running the code.</p>
+
+<h2>2 · Vectors, dot products, matrices</h2>
+<pre><code>py module_02_math\numpy_basics.py</code></pre>
+<div class="card tryit">
+  <h3>✅ What to watch for</h3>
+  <ul style="margin:0">
+    <li><b>cosine similarity</b>: <code>cos(a,b)≈0.98</code> (very similar) vs <code>cos(a,attacker)</code> much lower.
+        That gap <em>is</em> anomaly detection.</li>
+    <li><b>a matrix flips a point</b>: <code>[3,4] → [3,-4]</code> via <code>M @ point</code>.</li>
+    <li><b>speed</b>: numpy is ~500× faster than a Python loop for the same result. This is why ML code is "vectorized."</li>
+  </ul>
+</div>
+
+<div class="card sec">
+  <h3>🛡 Security lens</h3>
+  <p style="margin:0">Represent each session/flow/file as a feature vector; cosine similarity to a
+  "normal" profile gives you an anomaly score. Conversely, an attacker who knows the feature space can
+  craft inputs that <em>look</em> similar to normal while being malicious — the geometric intuition
+  behind adversarial evasion, which you'll meet again in M09.</p>
+</div>
+
+<h2>3 · See linear algebra drawn</h2>
+<pre><code>jupyter notebook module_02_math\linear_algebra.ipynb</code></pre>
+<p>Run each cell. You'll watch a vector as an arrow, a matrix <em>rotate</em> a square, and one
+<code>@</code> push a whole batch through a neural-network layer. Change the numbers and re-run —
+that's how intuition forms.</p>
+
+<h2>4 · Probability &amp; Bayes (with a spam filter)</h2>
+<pre><code>py module_02_math\probability_demo.py</code></pre>
+<div class="card note">
+  <h3>The insight that will stick with you</h3>
+  <p style="margin:0">A 99%-accurate malware scanner is only ~17% right <em>when it alerts</em>, because
+  malware is rare (the <b>base-rate fallacy</b>). This is why "accuracy" lies on imbalanced data —
+  the exact trap you'll disarm in Module 06, and the math behind SOC alert fatigue.</p>
+</div>
+<p>The same script then trains a Naive Bayes spam filter by hand and classifies new messages —
+a real classifier built from probability alone.</p>
+
+<h2>5 · Gradient descent: how learning actually happens</h2>
+<pre><code>py module_02_math\gradient_intuition.py</code></pre>
+<div class="card tryit">
+  <h3>✅ Watch the ball roll</h3>
+  <p style="margin:0 0 6px">Three runs: a good learning rate converges smoothly; too big
+  <em>explodes</em> out of the bowl; too small crawls. This is the most important knob in all of ML,
+  and you're seeing it fail in three ways on purpose.</p>
+  <pre><code>step  0  x=-1.000  f(x)=18.000  [O            |            ]
+step 12  x= 2.796  f(x)= 2.042  [           O |            ]
+step 24  x= 2.980  f(x)= 2.000  [            O|            ]</code></pre>
+</div>
+
+<h2>6 · Your project</h2>
+<p>Open <code>project.md</code>: reimplement <code>mean</code>, <code>variance</code>, and
+<code>normalization</code> from scratch, then match NumPy to 6 decimal places. Doing it by hand once
+means you'll trust (and debug) the library forever after.</p>
+
+<h2>7 · What you now know</h2>
+<ul>
+  <li>How to turn any "thing" into a feature vector.</li>
+  <li>Dot product / cosine similarity — and why it underlies search, recsys, anomaly detection, attention.</li>
+  <li>A matrix as a transform, and a neural layer as <code>W @ x + b</code>.</li>
+  <li>Gradient descent and the learning-rate knob — the engine of all learning.</li>
+  <li>Probability as uncertainty, Bayes' rule, and the base-rate fallacy.</li>
+</ul>
+
+<div class="nav">
+  <span>◀ <a href="../module_01_setup/tutorial.html">Module 01</a></span>
+  <span><a href="decisions.md">decisions.md</a> · <a href="project.md">project.md</a> ▶</span>
+</div>
+<footer>bob_AI — Module 02 of 12 · Next: <strong>Module 03 — Data Fundamentals</strong></footer>
+</div>
+</body>
+</html>
