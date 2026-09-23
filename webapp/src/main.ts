@@ -32,8 +32,8 @@ app.innerHTML = `
       <div class="eyebrow">Module 04 &middot; Supervised Learning &middot; Live Port</div>
       <h2>Watch logistic regression learn</h2>
       <p>
-        A real binary logistic regression — sigmoid output, binary cross-entropy loss,
-        full-batch gradient descent — trained step by step on a small synthetic 2D dataset.
+        A real binary logistic regression, sigmoid output, binary cross-entropy loss,
+        full-batch gradient descent, trained step by step on a small synthetic 2D dataset.
         Click <strong>Step</strong> to take one gradient-descent update, or <strong>Run</strong>
         to watch the decision boundary move as the loss actually decreases.
       </p>
@@ -68,7 +68,7 @@ app.innerHTML = `
   </div>
 
   <div class="footer">
-    <span>Built as a real TypeScript port of <code>module_04_supervised</code> — no canned animation, actual gradient descent.</span>
+    <span>Built as a real TypeScript port of <code>module_04_supervised</code>, no canned animation, actual gradient descent.</span>
     <span><code>matryoshka-ai/webapp</code></span>
   </div>
 `;

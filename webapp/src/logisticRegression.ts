@@ -103,7 +103,7 @@ export class LogisticRegression2D {
   }
 }
 
-/** Two roughly-linearly-separable Gaussian blobs — a small synthetic 2D dataset. */
+/** Two roughly-linearly-separable Gaussian blobs, a small synthetic 2D dataset. */
 export function makeBlobs(n = 120, seed = 42): Point[] {
   let s = seed;
   const rand = () => {
