@@ -7,7 +7,7 @@ app.innerHTML = `
   <div class="topbar">
     <div class="brand">🪢 nyansapo-ai</div>
     <div class="links">
-      <a href="https://github.com/Robert-Doe/matryoshka-ai" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://github.com/Robert-Doe/nyansapo-ai" target="_blank" rel="noopener">GitHub</a>
       <a href="https://robertdoe.com">← robertdoe.com</a>
     </div>
   </div>
