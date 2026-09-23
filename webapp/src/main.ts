@@ -15,9 +15,9 @@ app.innerHTML = `
   <div class="hero">
     <h1>Matryoshka <span class="accent">AI</span></h1>
     <p class="tagline">
-      AI is a set of nested layers, like a matryoshka doll. Below: the mental model from the
-      course README, then a real logistic regression — the same algorithm module_04_supervised
-      trains on the Iris dataset — learning live in your browser via actual gradient descent.
+      AI is a set of nested layers, like a matryoshka doll. Below is the mental model from the
+      course README, then a real logistic regression, the same algorithm module_04_supervised
+      trains on the Iris dataset, learning live in your browser via gradient descent.
     </p>
   </div>
 
