@@ -1,8 +1,8 @@
-# matryoshka-ai
+# nyansapo-ai
 
 I kept running into two kinds of AI material and hating both of them. One kind stays theoretical forever, all diagrams and vocabulary, and you finish it without being able to write a single line of code. The other throws you straight into a framework before you understand what that framework is quietly doing on your behalf, and you end up able to call `.fit()` without knowing what fitting even means. I built this course to be neither.
 
-The whole thing rests on one idea: AI is a set of nested layers, like a matryoshka doll.
+The name comes from Nyansapo, the Adinkra "wisdom knot" symbol from my own Akan heritage: wisdom, ingenuity, intelligence, and patience, all tied into one knot that only the patient hands can untie. That's the whole course in one image. AI isn't one flat subject, it's several layers tied together, and you only get to real understanding by untying them one at a time instead of yanking on the knot.
 
 ```
 Artificial Intelligence

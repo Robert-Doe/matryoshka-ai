@@ -1,4 +1,4 @@
-# Matryoshka AI — web demo
+# Nyansapo AI — web demo
 
 A real, interactive, in-browser port of `module_04_supervised`'s logistic regression:
 sigmoid output, binary cross-entropy loss, and full-batch gradient descent — trained
@@ -6,7 +6,7 @@ live in TypeScript on a small synthetic 2D dataset, with the decision boundary a
 redrawn on every step. No canned animation: click "Step" and it takes one real gradient
 update; click "Run" and it trains until convergence.
 
-Also includes a small presentational SVG of the AI ⊃ ML ⊃ DL ⊃ GenAI nesting-doll model
+Also includes a small presentational SVG of the AI ⊃ ML ⊃ DL ⊃ GenAI wisdom-knot model
 from the course README.
 
 ## Local development
@@ -57,5 +57,5 @@ Site settings → Build & deploy:
 ## Source layout
 
 - `src/logisticRegression.ts` — the ported algorithm (sigmoid, BCE loss, gradient descent, synthetic blob generator)
-- `src/main.ts` — UI wiring, canvas rendering, and the nesting-doll intro diagram
+- `src/main.ts` — UI wiring, canvas rendering, and the wisdom-knot intro diagram
 - `src/style.css` — design system (dark theme, CSS custom properties)

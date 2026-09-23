@@ -5,7 +5,7 @@ const app = document.querySelector<HTMLDivElement>('#app')!;
 
 app.innerHTML = `
   <div class="topbar">
-    <div class="brand">🪆 matryoshka-ai</div>
+    <div class="brand">🪢 nyansapo-ai</div>
     <div class="links">
       <a href="https://github.com/Robert-Doe/matryoshka-ai" target="_blank" rel="noopener">GitHub</a>
       <a href="https://robertdoe.com">← robertdoe.com</a>
@@ -13,16 +13,18 @@ app.innerHTML = `
   </div>
 
   <div class="hero">
-    <h1>Matryoshka <span class="accent">AI</span></h1>
+    <h1>Nyansapo <span class="accent">AI</span></h1>
     <p class="tagline">
-      AI is a set of nested layers, like a matryoshka doll. Below is the mental model from the
-      course README, then a real logistic regression, the same algorithm module_04_supervised
-      trains on the Iris dataset, learning live in your browser via gradient descent.
+      Nyansapo, the Akan "wisdom knot," ties wisdom, ingenuity, intelligence, and patience into
+      one knot that only patient hands can untie. AI is the same kind of knot: one subject made
+      of layers tied together. Below is the mental model from the course README, then a real
+      logistic regression, the same algorithm module_04_supervised trains on the Iris dataset,
+      learning live in your browser via gradient descent.
     </p>
   </div>
 
   <div class="nest-card">
-    <h2>The nesting-doll model</h2>
+    <h2>The wisdom-knot model</h2>
     <p class="sub">Artificial Intelligence ⊃ Machine Learning ⊃ Deep Learning ⊃ Generative AI / LLMs</p>
     <div class="nest-rings" id="nest-rings"></div>
   </div>
@@ -69,12 +71,12 @@ app.innerHTML = `
 
   <div class="footer">
     <span>Built as a real TypeScript port of <code>module_04_supervised</code>, no canned animation, actual gradient descent.</span>
-    <span><code>matryoshka-ai/webapp</code></span>
+    <span><code>nyansapo-ai/webapp</code></span>
   </div>
 `;
 
 // ---------------------------------------------------------------------------
-// Nesting-doll intro diagram (presentational only)
+// Wisdom-knot intro diagram (presentational only)
 // ---------------------------------------------------------------------------
 const ringsHost = document.querySelector<HTMLDivElement>('#nest-rings')!;
 ringsHost.innerHTML = `
